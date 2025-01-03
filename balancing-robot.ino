@@ -39,10 +39,11 @@
 
 // WiFi
 
-const char * ssid = "sgf_net00";
-const char * password = "Teteio#1";
+#include "ssidpwd.h" // commentare questa riga o creare il proprio file con le credenziali del WiFi se si vuole usare il wifi
+const char * ssid = SSID;
+const char * password = PASSWORD;
 
-bool is_WiFi = true; // should put a switch
+bool is_WiFi = false; // sarebbe da mettere un interruttore sul robot
 
 AsyncUDP udp;
 
@@ -120,7 +121,7 @@ float smoothed_desidered_pos_2 = 0.0f;
 
 float position_smoothing_factor = 0.95f;
 
-float max_position_set_point_offset = 0.0f; // should scale down position pid contribute if angle gets too high aka near death mode
+float max_position_set_point_offset = 0.0f; // should scale down position pid contribution if angle gets too high, near death mode
 
 float set_point_offset_1 = 0.0f;
 float set_point_offset_2 = 0.0f;
@@ -569,6 +570,8 @@ void loop() {
  
 }
 
+
+// i motori non si muovono se il pwm ha un duty cycle troppo basso
 int linearization_function_1(int value){
   return int(float(value + lin_off_1) / (255.0f+lin_off_1) * 255.0f);
 }
